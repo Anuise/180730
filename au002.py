@@ -14,13 +14,13 @@ print('時間:', time)
 
 import csv
 
-table = [
-    ['作者:', author],
-    [board,' 看版'],
-    ['標題:', title],
-    ['時間:', time]
-]
+# table = [
+#     ['作者:',' 看版','標題:','時間:'],
+#     [author,board,title,time]
+    
+#]
 
 with open('c1.csv', 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(table)
+    writer.writerow(['作者:',' 看版','標題:','時間:'])
+    writer.writerow([author,board,title,time])  
