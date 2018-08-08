@@ -1,0 +1,14 @@
+FROM ubuntu:16.04
+MAINTAINER plusoneLiao
+RUN apt-get update -y \
+    && apt-get install -y \
+           python3 -y
+RUN apt-get update -y \
+    && apt-get install python3-pip  -y \
+    && apt-get autoclean
+RUN mkdir opt/app
+COPY ./src ./opt/app
+EXPOSE  3000
+WORKDIR opt/app 
+RUN pip3 install -r requirement.txt
+CMD ["python3","app.py"]
