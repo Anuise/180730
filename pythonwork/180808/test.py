@@ -1,9 +1,3 @@
-from flask import Flask
-app = Flask(__name__)
-# sapp.config['JSON_AS_ASCII'] = False
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-if __name__ == '__main__':
-    app.run()
+import datetime
+x = datetime.datetime.now()
+print(x)
