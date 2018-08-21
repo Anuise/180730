@@ -97,7 +97,7 @@ def  show_user_profile (use, n, number):
     
     def main_function(url, m, number):
         r = requests.get(url)
-        soup = BeautifulSoup(r.text,"html.parser")
+        soup = BeautifulSoup(r.text, "html.parser")
         this_page_article_href = get_all_articles_href(url, m, number)
         y = get_all_articles_content(this_page_article_href, m, number)
         
@@ -107,7 +107,7 @@ def  show_user_profile (use, n, number):
     # ans = mongo_data(k, number)
     print('successful')
 
-    return  k
+    return k
     
 
 if  __name__  ==  '__main__' : 
