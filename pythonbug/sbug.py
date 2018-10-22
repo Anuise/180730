@@ -63,4 +63,10 @@ def main_function(url="https://www.ptt.cc/bbs/LoL/index.html"):
     this_page_article_href = get_all_articles_href(page_url=url)
     get_articles_content(this_page_article_href=this_page_article_href)
 
+    btn = soup.select('div.btn-group > a')
+    up_page_href = btn[3]['href']
+
+    next_page_url = 'https://www.ptt.cc' + up_page_href
+    main_function(url = next_page_url)
+    
 main_function()
