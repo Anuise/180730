@@ -2,16 +2,7 @@
 import  requests
 from bs4 import BeautifulSoup
 import shutil
-
-def over18(board):
-    load ={
-        'from':'/bbs/sex/index.html',
-        'yes':'yes'
-    }
-    res = requests.post('https://www.ptt.cc/ask/over18', verify = False, data = load)
-    res = requests.get(board)
-    return BeautifulSoup(res.text, 'html.parser')
-
+from http import cookies
 
 def get_articles_content(this_page_article_href):
     image_count = 0
@@ -54,11 +45,11 @@ def get_all_articles_href(page_url):
     return article_href
 
 
-def main_function(url="https://www.ptt.cc/bbs/sex/index.html"):
+def main_function(url="https://www.ptt.cc/bbs/Beauty/index.html"):
+    cookieset = 'over18=1;__cfduid=d3886306a1ba3a4c0543e5e5dc6280d131541045177; _ga=GA1.2.248313929.1541045178; _gid=GA1.2.551763381.1541045178; _gat=1'
     
-    # r = requests.get(url)
-    soup = over18(url)
-    print(soup)
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text,"html.parser")
 
     this_page_article_href = get_all_articles_href(page_url=url)
     get_articles_content(this_page_article_href=this_page_article_href)
