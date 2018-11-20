@@ -1,16 +1,14 @@
-# -*- coding: UTF-8 -*-
 import  requests
 from bs4 import BeautifulSoup
 import shutil
-from http import cookies
+
 
 def get_articles_content(this_page_article_href):
     image_count = 0
     for url in this_page_article_href:
         r = requests.get("https://www.ptt.cc" + url )
         soup = BeautifulSoup(r.text,"html.parser")
-        # print(soup)
-                
+
         imgs = soup.find_all('a')       #找出所有a標籤（圖片）
         for img in imgs:
             if '.jpg' in img['href']:   #判斷圖片網址是否包含jpg（避免抓錯）
@@ -21,14 +19,14 @@ def get_articles_content(this_page_article_href):
 
 
 def download_img_from_article(img_url, img_name):
-    r = requests.get(img_url, stream=True)
-    file_name = str(img_name + 1)
+    r = requests.get(img_url, stream=True)  #獲取圖片網址
+    file_name = str(img_name + 1)   #命名圖片名稱
     print( 'save img to  ./image/'+ file_name + '.jpg')
     try:
-        with open('/home/au/Pythonpractice-/pythonbug/image/' + file_name + '.jpg', 'wb') as out_file: #下載資料夾寫絕對路徑
+        with open('./image/' + file_name + '.jpg', 'wb') as out_file: #使用shutil存圖片,目的地為當前目錄的image資料夾
             shutil.copyfileobj(r.raw, out_file)
     except:
-        print('can not save img', img_url)
+        print('can not save image', img_url)  #失敗印出can not save image
         
 
 def get_all_articles_href(page_url):
@@ -46,8 +44,6 @@ def get_all_articles_href(page_url):
 
 
 def main_function(url="https://www.ptt.cc/bbs/Beauty/index.html"):
-    cookieset = 'over18=1;__cfduid=d3886306a1ba3a4c0543e5e5dc6280d131541045177; _ga=GA1.2.248313929.1541045178; _gid=GA1.2.551763381.1541045178; _gat=1'
-    
     r = requests.get(url)
     soup = BeautifulSoup(r.text,"html.parser")
 
