@@ -2,11 +2,15 @@ import  requests
 from bs4 import BeautifulSoup
 import shutil
 
+sesssion = requests.session()   #使用session
+url = 'https://www.ptt.cc/ask/over18'   #url中儲存詢問18禁頁面的網址
+form_data = {'from' : '/bbs/sex/index.html', 'yes' : 'yes'} #將Form Data中的資料儲存起來
+res = sesssion.post(url, data=form_data)    #把form_data的資料post給18禁頁面
 
 def get_articles_content(this_page_article_href):
     image_count = 0
     for url in this_page_article_href:
-        r = requests.get("https://www.ptt.cc" + url )
+        r = sesssion.get("https://www.ptt.cc" + url )
         soup = BeautifulSoup(r.text,"html.parser")
 
         imgs = soup.find_all('a')       #找出所有a標籤（圖片）
@@ -19,20 +23,19 @@ def get_articles_content(this_page_article_href):
 
 
 def download_img_from_article(img_url, img_name):
-    r = requests.get(img_url, stream=True)  #獲取圖片網址
+    r = sesssion.get(img_url, stream=True)  #獲取圖片網址
     file_name = str(img_name + 1)   #命名圖片名稱
     print( 'save img to  ./image/'+ file_name + '.jpg')
     try:
-        with open('./image/' + file_name + '.jpg', 'wb') as out_file: 
+        with open('./image/' + file_name + '.jpg', 'wb') as out_file: #使用shutil存圖片,目的地為當前目錄的image資料夾
             shutil.copyfileobj(r.raw, out_file)
-            #使用shutil存圖片,目的地為當前目錄的image資料夾
     except:
         print('can not save image', img_url)  #失敗印出can not save image
         
 
 def get_all_articles_href(page_url):
     article_href =[]
-    r = requests.get(page_url)
+    r = sesssion.get(page_url)
     soup = BeautifulSoup(r.text,"html.parser")
     results = soup.findAll("div",{"class":"title"})
     for item in results:
@@ -44,8 +47,8 @@ def get_all_articles_href(page_url):
     return article_href
 
 
-def main_function(url="https://www.ptt.cc/bbs/Beauty/index.html"):
-    r = requests.get(url)
+def main_function(url="https://www.ptt.cc/bbs/sex/index.html"):
+    r = sesssion.get(url)
     soup = BeautifulSoup(r.text,"html.parser")
 
     this_page_article_href = get_all_articles_href(page_url=url)
@@ -57,6 +60,5 @@ def main_function(url="https://www.ptt.cc/bbs/Beauty/index.html"):
     next_page_url = 'https://www.ptt.cc' + up_page_href #上一頁的Url放到變數next_page_url內
     main_function(url = next_page_url)
     #Eris Pads Her Chest
-
 
 main_function()
